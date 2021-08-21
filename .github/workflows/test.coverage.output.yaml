@@ -1,0 +1,16 @@
+name: Test Coverage output
+on: [push]
+jobs:
+  test_job:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+           node-version: '14'
+      - name: Get coverage output
+        id: get_coverage
+        run: echo "::set-output name=coverage::$(awk '/^Lines/ { print $2 }' < sample.coverage.txt)"
+      - name: Output coverage found
+        run: echo "Coverage found ${{steps.get_coverage.outputs.coverage}}"
